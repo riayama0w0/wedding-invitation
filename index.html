@@ -14,11 +14,11 @@
 
         /* --- アニメーションの定義 --- */
         @keyframes fadeInUp {
-    0% {
+    from {
         opacity: 0;
-        transform: translateY(15px); /* 移動距離を少し短くして滑らかに */
+        transform: translateY(15px);
     }
-    100% {
+    to {
         opacity: 1;
         transform: translateY(0);
     }
@@ -45,13 +45,17 @@
     background-size: cover;
     background-position: center;
     color: white;
-
-    /* --- 修正したアニメーション設定 --- */
-    opacity: 0; /* 最初は消しておく */
-    animation: fadeInUp 1.8s ease-out 0.2s forwards; /* 0.2秒待ってから開始、最後は固定 */
-    will-change: opacity, transform; /* 描画を最適化 */
+    
+    opacity: 0; 
+    animation: fadeInUp 1.8s ease-out 0.1s forwards; /* 0.1秒後に開始 */
+    will-change: opacity, transform;
 }
-        .hero h1 { color: white; font-size: 3rem; margin-bottom: 0; }
+        /* 2. 文字のアニメーション（画像より少し遅らせる） */
+.hero h1, .hero p {
+    opacity: 0;
+    /* 背景が動き始めてから0.8秒後に文字が浮かび上がる設定 */
+    animation: fadeInUp 1.5s ease-out 0.8s forwards; 
+}
 
         /* スケジュール用のスタイル */
         .timeline {
@@ -99,8 +103,8 @@
 <body>
 
     <div class="hero">
-        <h1>Happy Wedding</h1>
-        <p>2026.06.14</p>
+    <p style="letter-spacing: 0.2em; margin-bottom: 0;">Wedding Invitation</p>
+    <h1>Yuki & Mikiko</h1> <p>2026.06.14 (Sun)</p>
     </div>
 
     <section id="message">

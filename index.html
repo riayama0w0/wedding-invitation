@@ -11,6 +11,19 @@
             --text-color: #555;
             --accent-color: #d4af37; /* ゴールド系 */
         }
+
+        /* --- アニメーションの定義 --- */
+        @keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(15px); /* 移動距離を少し短くして滑らかに */
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
         body {
             margin: 0;
             font-family: 'Shippori Mincho', serif;
@@ -24,15 +37,20 @@
         
         /* メインビジュアル */
         .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80'); /* サンプル画像 */
-            background-size: cover;
-            background-position: center;
-            color: white;
-        }
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('images/main-photo.jpg'); 
+    background-size: cover;
+    background-position: center;
+    color: white;
+
+    /* --- 修正したアニメーション設定 --- */
+    opacity: 0; /* 最初は消しておく */
+    animation: fadeInUp 1.8s ease-out 0.2s forwards; /* 0.2秒待ってから開始、最後は固定 */
+    will-change: opacity, transform; /* 描画を最適化 */
+}
         .hero h1 { color: white; font-size: 3rem; margin-bottom: 0; }
 
         /* スケジュール用のスタイル */
@@ -135,4 +153,3 @@
 
 </body>
 </html>
-

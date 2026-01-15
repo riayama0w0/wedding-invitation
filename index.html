@@ -63,10 +63,17 @@
             }
         }
 
+        html,
         body {
             margin: 0;
+            padding: 0;
+            width: 100%;
+            overflow-x: hidden;
             font-family: 'Shippori Mincho', serif;
             background-color: var(--main-color);
+        }
+
+        body {
             /* 日本の伝統的な「七宝」文様を現代的にアレンジした背景パターン */
             background-image:
                 radial-gradient(circle at 100% 150%, var(--bg-accent) 24%, var(--main-color) 25%, var(--main-color) 28%, var(--bg-accent) 29%, var(--bg-accent) 36%, var(--main-color) 36%, var(--main-color) 40%, transparent 40%),
@@ -204,6 +211,41 @@
             animation: fadeIn 1s ease-in 2.5s forwards, bounce 2s infinite 2.5s;
         }
 
+        /* カウントダウンのスタイル */
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+            opacity: 0;
+            animation: fadeInUp 2s ease-out 1.8s forwards;
+        }
+
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            padding: 10px;
+            border-radius: 4px;
+            min-width: 70px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .countdown-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .countdown-label {
+            font-size: 0.65rem;
+            margin-top: 5px;
+            letter-spacing: 0.1em;
+            opacity: 0.9;
+        }
+
         .date {
             font-size: 1.3rem;
             margin-bottom: 40px;
@@ -272,12 +314,25 @@
 
         @media (max-width: 768px) {
             .hero h1 {
-                font-size: 2.5rem;
+                font-size: 3.2rem;
             }
 
             section {
                 padding: 60px 20px;
                 margin: 40px 15px;
+            }
+
+            .countdown {
+                gap: 10px;
+            }
+
+            .countdown-item {
+                min-width: 60px;
+                padding: 8px 5px;
+            }
+
+            .countdown-number {
+                font-size: 1.4rem;
             }
 
             .timeline {
@@ -317,6 +372,24 @@
         <p style="margin-bottom: 0;">Wedding Invitation</p>
         <h1>Yuki & Mikiko</h1>
         <p>2026.06.14 (Sun)</p>
+        <div class="countdown" id="countdown">
+            <div class="countdown-item">
+                <span class="countdown-number" id="days">00</span>
+                <span class="countdown-label">Days</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="hours">00</span>
+                <span class="countdown-label">Hours</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="minutes">00</span>
+                <span class="countdown-label">Min</span>
+            </div>
+            <div class="countdown-item">
+                <span class="countdown-number" id="seconds">00</span>
+                <span class="countdown-label">Sec</span>
+            </div>
+        </div>
         <div class="scroll-indicator">
             <span>Scroll</span>
             <i data-lucide="chevron-down"></i>
@@ -460,6 +533,32 @@
         document.querySelectorAll('section').forEach(section => {
             observer.observe(section);
         });
+
+        // カウントダウン機能
+        const targetDate = new Date('2026/06/14 00:00:00').getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+
+            if (diff <= 0) {
+                document.getElementById('countdown').innerHTML = "<p style='font-size: 1.5rem; letter-spacing: 0.2em;'>Happy Wedding Day!</p>";
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
     </script>
 </body>
 

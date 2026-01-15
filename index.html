@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wedding Invitation</title>
-    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;700&family=Dancing+Script:wght@700&family=Great+Vibes&display=swap"
+        rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
@@ -23,7 +25,7 @@
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(40px);
             }
 
             to {
@@ -39,6 +41,25 @@
 
             to {
                 opacity: 1;
+            }
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+
+            60% {
+                transform: translateX(-50%) translateY(-5px);
             }
         }
 
@@ -61,15 +82,23 @@
 
         section {
             padding: 100px 40px;
-            max-width: 700px;
-            margin: 60px auto;
+            max-width: 760px;
+            margin: 100px auto;
             background: var(--glass-bg);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
             border: var(--border-style);
-            border-radius: 4px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            box-shadow: 0 15px 40px rgba(197, 160, 89, 0.1);
             position: relative;
             z-index: 1;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* セクションの四隅に装飾を追加 */
@@ -143,17 +172,36 @@
 
         .hero h1 {
             color: white;
-            font-size: 3.5rem;
-            margin: 20px 0;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            font-family: 'Great Vibes', cursive;
+            font-size: 5rem;
+            margin: 10px 0;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
             opacity: 0;
-            animation: fadeInUp 1.5s ease-out 0.8s forwards;
+            animation: fadeInUp 2s ease-out 0.8s forwards;
+            letter-spacing: 0.05em;
         }
 
         .hero p {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            letter-spacing: 0.3em;
             opacity: 0;
-            animation: fadeInUp 1.5s ease-out 1.2s forwards;
+            animation: fadeInUp 2s ease-out 1.5s forwards;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.8rem;
+            letter-spacing: 0.2em;
+            opacity: 0;
+            animation: fadeIn 1s ease-in 2.5s forwards, bounce 2s infinite 2.5s;
         }
 
         .date {
@@ -266,9 +314,13 @@
 <body>
 
     <div class="hero">
-        <p style="letter-spacing: 0.2em; margin-bottom: 0;">Wedding Invitation</p>
+        <p style="margin-bottom: 0;">Wedding Invitation</p>
         <h1>Yuki & Mikiko</h1>
         <p>2026.06.14 (Sun)</p>
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <i data-lucide="chevron-down"></i>
+        </div>
     </div>
 
     <section id="message">
@@ -391,6 +443,23 @@
 
         // アイコンの初期化
         lucide.createIcons();
+
+        // スクロール連動アニメーション
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
     </script>
 </body>
 

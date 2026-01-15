@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wedding Invitation</title>
     <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
             --main-color: #fdfaf6;
@@ -106,6 +107,22 @@
             width: 40px;
             height: 1px;
             background: var(--accent-color);
+        }
+
+        /* アイコンのスタイル */
+        .title-icon {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            margin-right: 12px;
+            vertical-align: middle;
+            color: var(--accent-color);
+            stroke-width: 1.5;
+            transition: transform 0.3s ease;
+        }
+
+        section:hover .title-icon {
+            transform: scale(1.1) rotate(5deg);
         }
 
         /* メインビジュアル */
@@ -255,14 +272,14 @@
     </div>
 
     <section id="message">
-        <h2>Greetings</h2>
+        <h2><i data-lucide="heart" class="title-icon"></i>Greetings</h2>
         <p>私たちはこの度 結婚することとなりました<br>
             日頃お世話になっている皆様を招いて<br>
             ささやかなパーティーを開催いたします</p>
     </section>
 
     <section id="schedule">
-        <h2>Schedule</h2>
+        <h2><i data-lucide="calendar-heart" class="title-icon"></i>Schedule</h2>
         <p class="date">2026.06.14 (Sun)</p>
 
         <ul class="timeline">
@@ -283,7 +300,7 @@
     </section>
 
     <section id="access">
-        <h2>Access</h2>
+        <h2><i data-lucide="train-front" class="title-icon"></i>Access</h2>
         <p>会場：センティール・ラ・セゾン 岐阜<br>〒502-0865<br>岐阜県岐阜市正木西町１１−２５</p>
         <div class="iframe-container">
             <iframe
@@ -293,7 +310,7 @@
     </section>
 
     <section id="rsvp">
-        <h2>RSVP</h2>
+        <h2><i data-lucide="mail-open" class="title-icon"></i>RSVP</h2>
         <p>お手数ですが 〇月〇日までに<br>ご回答をお願い申し上げます</p>
         <div class="iframe-container" style="padding-top: 250%;">
             <iframe
@@ -371,6 +388,9 @@
                 petal.remove();
             }, duration * 1000);
         }
+
+        // アイコンの初期化
+        lucide.createIcons();
     </script>
 </body>
 

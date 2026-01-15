@@ -219,6 +219,30 @@
                 width: 100%;
             }
         }
+
+        /* --- 花びらエフェクトのスタイル --- */
+        .petal {
+            position: fixed;
+            background-color: #ffdbed;
+            /* 桜色 */
+            border-radius: 150% 0 150% 0;
+            opacity: 0.8;
+            pointer-events: none;
+            z-index: 1000;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translate(var(--dx), var(--dy)) rotate(var(--dr));
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 
@@ -281,6 +305,73 @@
         © 2026 Yuki & Mikiko
     </footer>
 
+    <script>
+        let lastEffectTime = 0;
+        const effectInterval = 50; // エフェクトが発生する最小間隔 (ms)
+
+        function handleTrigger(x, y, count = 1) {
+            const now = Date.now();
+            if (now - lastEffectTime < effectInterval) return;
+            lastEffectTime = now;
+
+            for (let i = 0; i < count; i++) {
+                createPetal(x, y);
+            }
+        }
+
+        // クリック時 (5枚)
+        document.addEventListener('click', (e) => {
+            handleTrigger(e.clientX, e.clientY, 5);
+        });
+
+        // タッチ開始時 (スクロールのきっかけになる動作など)
+        document.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            handleTrigger(touch.clientX, touch.clientY, 3);
+        }, { passive: true });
+
+        // マウス移動・なぞる動作 (判定をゆるくするために追加)
+        document.addEventListener('mousemove', (e) => {
+            // マウス移動時は1枚ずつ控えめに
+            if (Math.random() > 0.8) { // 頻度を少し抑える
+                handleTrigger(e.clientX, e.clientY, 1);
+            }
+        });
+
+        function createPetal(x, y) {
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+
+            // ランダムなサイズ
+            const size = Math.random() * 8 + 8;
+            petal.style.width = `${size}px`;
+            petal.style.height = `${size}px`;
+
+            // 出現位置を少し散らす
+            const offsetX = (Math.random() - 0.5) * 20;
+            const offsetY = (Math.random() - 0.5) * 20;
+            petal.style.left = `${x + offsetX}px`;
+            petal.style.top = `${y + offsetY}px`;
+
+            // ランダムな移動量と回転量
+            const dx = (Math.random() - 0.5) * 250;
+            const dy = Math.random() * 250 + 150;
+            const dr = (Math.random() - 0.5) * 1080;
+
+            petal.style.setProperty('--dx', `${dx}px`);
+            petal.style.setProperty('--dy', `${dy}px`);
+            petal.style.setProperty('--dr', `${dr}deg`);
+
+            const duration = Math.random() * 2 + 1.5;
+            petal.style.animationDuration = `${duration}s`;
+
+            document.body.appendChild(petal);
+
+            setTimeout(() => {
+                petal.remove();
+            }, duration * 1000);
+        }
+    </script>
 </body>
 
 </html>
